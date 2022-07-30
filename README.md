@@ -1,2 +1,2 @@
-# sprintboot_restAPI
-sprintboot: Controller + Service + DAO (myBatis) + mySQL
+# springboot_restAPI
+springboot: Controller + Service + DAO (myBatis) + mySQL
