@@ -22,7 +22,8 @@ class DemoApplicationTests {
     @Test
     public void create(){
         BirthDeathRate birthDeathRate=new BirthDeathRate("2022","death","bay area",1000);
-        birthDeathRateMapper.insert(birthDeathRate);
+        boolean flag=birthDeathRateMapper.insert(birthDeathRate);
+        System.out.println(flag);
         BirthDeathRate res=birthDeathRateMapper.findById(birthDeathRate.getId());
         System.out.println(res.toString());
         assertEquals("2022", res.getPeriod());

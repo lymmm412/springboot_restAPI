@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface BirthDeathRateMapper {
 
-    void insert(BirthDeathRate birthDeathRate);
+    boolean insert(BirthDeathRate birthDeathRate);
 
     BirthDeathRate findById(int id);
 }
