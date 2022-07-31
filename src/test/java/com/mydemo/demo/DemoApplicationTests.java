@@ -9,8 +9,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import org.springframework.test.context.junit4.SpringRunner;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 
 @RunWith(SpringRunner.class)
@@ -19,23 +21,103 @@ class DemoApplicationTests {
     @Autowired
     private BirthDeathRateMapper birthDeathRateMapper;
 
+    private List<BirthDeathRate> list=new ArrayList<>();
     @Test
     public void create(){
-        BirthDeathRate birthDeathRate=new BirthDeathRate("2022","death","bay area",1000);
-        boolean flag=birthDeathRateMapper.insert(birthDeathRate);
-        System.out.println(flag);
-        BirthDeathRate res=birthDeathRateMapper.findById(birthDeathRate.getId());
-        System.out.println(res.toString());
-        assertEquals("2022", res.getPeriod());
-        assertEquals("death", res.getBirthOrDeath());
-        assertEquals("bay area", res.getRegion());
-        assertEquals(1000, res.getCount());
+        clear();
+        BirthDeathRate b1=new BirthDeathRate("2019","death","bay area",200);
+        BirthDeathRate b2=new BirthDeathRate("2020","death","china",400);
+        BirthDeathRate b3=new BirthDeathRate("2021","birth","japan",600);
+        BirthDeathRate b4=new BirthDeathRate("2022","birth","germany",800);
+        list.add(b1);
+        list.add(b2);
+        list.add(b3);
+        list.add(b4);
+        for(BirthDeathRate l:list){
+            birthDeathRateMapper.insert(l);
+            BirthDeathRate res=birthDeathRateMapper.findById(l.getId());
+            System.out.println(res.toString());
+            assertEquals(l.getPeriod(), res.getPeriod());
+            assertEquals(l.getBirthOrDeath(), res.getBirthOrDeath());
+            assertEquals(l.getRegion(), res.getRegion());
+            assertEquals(l.getCount(), res.getCount());
+        }
+
+
     }
 
     @Test
     public void findById(){
-        BirthDeathRate birthDeathRate=birthDeathRateMapper.findById(1);
-        assertNotNull(birthDeathRate);
-        System.out.println(birthDeathRate.toString());
+        create();
+        BirthDeathRate res=birthDeathRateMapper.findById(1);
+        BirthDeathRate expected=list.get(0);
+        assertEquals(expected.getCount(),res.getCount());
+        assertEquals(expected.getPeriod(),res.getPeriod());
+        assertEquals(expected.getBirthOrDeath(),res.getBirthOrDeath());
+        assertEquals(expected.getRegion(),res.getRegion());
+
     }
+
+    @Test
+    public void findAll(){
+        create();
+
+        List<BirthDeathRate> res=birthDeathRateMapper.findAll();
+        assertEquals(list.size(),res.size());
+        for(int i=0; i<res.size();i++){
+            assertEquals(list.get(i).getCount(), res.get(i).getCount());
+            assertEquals(list.get(i).getPeriod(), res.get(i).getPeriod());
+            assertEquals(list.get(i).getBirthOrDeath(),res.get(i).getBirthOrDeath());
+            assertEquals(list.get(i).getRegion(), res.get(i).getRegion());
+        }
+    }
+
+    @Test
+    public void update(){
+        create();
+
+        BirthDeathRate update=list.get(2);
+        update.setCount(0);
+        birthDeathRateMapper.updateById(update);
+        BirthDeathRate res=birthDeathRateMapper.findById(update.getId());
+
+        assertEquals(update.getCount(),res.getCount());
+        assertEquals(update.getPeriod(),res.getPeriod());
+        assertEquals(update.getBirthOrDeath(),res.getBirthOrDeath());
+        assertEquals(update.getRegion(),res.getRegion());
+
+    }
+
+    @Test
+    public void filter(){
+        create();
+        List<BirthDeathRate> birthList=birthDeathRateMapper.filterBirth("birth");
+        List<BirthDeathRate> deathList=birthDeathRateMapper.filterBirth("death");
+        assertEquals(birthList.size(), list.size()/2);
+        assertEquals(deathList.size(), list.size()/2);
+    }
+    @Test
+    public void deleteById(){
+        create();
+
+        BirthDeathRate toBeDelete=list.get(1);
+        birthDeathRateMapper.deleteById(toBeDelete.getId());
+
+        List<BirthDeathRate> res=birthDeathRateMapper.findAll();
+        assertEquals(res.size(), list.size()-1);
+
+        for(BirthDeathRate r:res){
+            assertNotEquals(toBeDelete.getId(),r.getId());
+        }
+
+        clear();
+    }
+    @Test
+    public void clear(){
+        birthDeathRateMapper.clearAll();
+        assertEquals(0,birthDeathRateMapper.findAll().size());
+        list=new ArrayList<>();
+    }
+
+
 }

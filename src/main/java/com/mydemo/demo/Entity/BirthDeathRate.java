@@ -66,7 +66,7 @@ public class BirthDeathRate {
         return "BirthDeathRate{" +
                 "id=" + id +
                 ", period='" + period + '\'' +
-                ", birth_or_death='" + birthOrDeath + '\'' +
+                ", birthOrDeath='" + birthOrDeath + '\'' +
                 ", region='" + region + '\'' +
                 ", count=" + count +
                 '}';

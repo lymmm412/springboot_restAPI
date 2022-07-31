@@ -1,9 +1,15 @@
 <!DOCTYPE mapper
     PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-
 <mapper namespace="com.mydemo.demo.Mapper.BirthDeathRateMapper">
 
+    <resultMap id="BirthDeathRate" type="com.mydemo.demo.Entity.BirthDeathRate">
+        <id column="id" property="id" />
+        <result column="period" property="period" />
+        <result column="birth_or_death" property="birthOrDeath" />
+        <result column="region" property="region" />
+        <result column="count" property="count" />
+    </resultMap>
 <!--    carmel in java but underscored in database, so we use resultMap-->
     <resultMap id="BirthDeathRateMap" type="com.mydemo.demo.Entity.BirthDeathRate">
         <id column="id" property="id" />
@@ -13,13 +19,43 @@
         <result column="count" property="count" />
     </resultMap>
 
+
+
     <insert id="insert" parameterType="com.mydemo.demo.Entity.BirthDeathRate" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO birth_death_rate (period, birth_or_death, region, count)
         VALUE(#{period}, #{birthOrDeath}, #{region}, #{count})
     </insert>
 
-    <select id="findById" resultMap="BirthDeathRateMap">
-        SELECT id, period, birth_or_death, region, count FROM birth_death_rate WHERE id = #{id}
+    <select id="findById" resultMap="BirthDeathRate">
+        SELECT *
+        FROM birth_death_rate WHERE id=#{id}
     </select>
+
+    <select id="findAll" resultMap="BirthDeathRateMap">
+        SELECT * FROM birth_death_rate
+    </select>
+
+    <select id="filterBirth" resultMap="BirthDeathRateMap">
+        SELECT * FROM birth_death_rate
+        WHERE birth_or_death=#{birthOrDeath}
+    </select>
+
+    <delete id="deleteById" parameterType="int">
+        DELETE FROM birth_death_rate WHERE id = #{id}
+    </delete>
+
+    <update id="updateById" parameterType="BirthDeathRate">
+        UPDATE birth_death_rate
+        SET
+        period = #{period},
+        birth_or_death = #{birthOrDeath},
+        region = #{region},
+        count = #{count}
+        WHERE id = #{id}
+    </update>
+
+    <delete id="clearAll">
+        TRUNCATE TABLE birth_death_rate
+    </delete>
 
 </mapper>
