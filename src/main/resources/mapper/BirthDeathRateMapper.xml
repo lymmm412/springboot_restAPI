@@ -1,0 +1,25 @@
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.mydemo.demo.Mapper.BirthDeathRateMapper">
+
+<!--    carmel in java but underscored in database, so we use resultMap-->
+    <resultMap id="BirthDeathRateMap" type="com.mydemo.demo.Entity.BirthDeathRate">
+        <id column="id" property="id" />
+        <result column="period" property="period" />
+        <result column="birth_or_death" property="birthOrDeath" />
+        <result column="region" property="region" />
+        <result column="count" property="count" />
+    </resultMap>
+
+    <insert id="insert" parameterType="com.mydemo.demo.Entity.BirthDeathRate" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO birth_death_rate (period, birth_or_death, region, count)
+        VALUE(#{period}, #{birthOrDeath}, #{region}, #{count})
+    </insert>
+
+    <select id="findById" resultMap="BirthDeathRateMap">
+        SELECT id, period, birth_or_death, region, count FROM birth_death_rate WHERE id = #{id}
+    </select>
+
+</mapper>

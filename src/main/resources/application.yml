@@ -1,8 +1,9 @@
 spring:
   datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/exercise
     username: root
 
 mybatis:
   mapper-locations: classpath*:mapper/*.xml
-  type-aliases-package: com.myintuit.example.Entity
+  type-aliases-package: com.mydemo.demo.Entity

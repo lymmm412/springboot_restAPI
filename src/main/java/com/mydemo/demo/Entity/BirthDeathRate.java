@@ -5,7 +5,7 @@ public class BirthDeathRate {
 
     private String period;
 
-    private String birth_or_death;
+    private String birthOrDeath;
 
     private String region;
 
@@ -14,6 +14,12 @@ public class BirthDeathRate {
     public BirthDeathRate() {
     }
 
+    public BirthDeathRate(String period, String birthOrDeath, String region, int count) {
+        this.period = period;
+        this.birthOrDeath = birthOrDeath;
+        this.region = region;
+        this.count = count;
+    }
 
     public int getId() {
         return id;
@@ -31,12 +37,12 @@ public class BirthDeathRate {
         this.period = period;
     }
 
-    public String getBirth_or_death() {
-        return birth_or_death;
+    public String getBirthOrDeath() {
+        return birthOrDeath;
     }
 
-    public void setBirth_or_death(String birth_or_death) {
-        this.birth_or_death = birth_or_death;
+    public void setBirthOrDeath(String birthOrDeath) {
+        this.birthOrDeath = birthOrDeath;
     }
 
     public String getRegion() {
@@ -60,7 +66,7 @@ public class BirthDeathRate {
         return "BirthDeathRate{" +
                 "id=" + id +
                 ", period='" + period + '\'' +
-                ", birth_or_death='" + birth_or_death + '\'' +
+                ", birth_or_death='" + birthOrDeath + '\'' +
                 ", region='" + region + '\'' +
                 ", count=" + count +
                 '}';
