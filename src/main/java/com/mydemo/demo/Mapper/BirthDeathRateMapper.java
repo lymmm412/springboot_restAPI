@@ -23,4 +23,6 @@ public interface BirthDeathRateMapper {
     boolean updateById(BirthDeathRate birthDeathRate);
 
     void clearAll();
+
+    void saveAll(List<BirthDeathRate> birthDeathRates);
 }

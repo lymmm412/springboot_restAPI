@@ -21,6 +21,14 @@ public class BirthDeathRate {
         this.count = count;
     }
 
+    public BirthDeathRate(int id, String period, String birthOrDeath, String region, int count) {
+        this.id = id;
+        this.period = period;
+        this.birthOrDeath = birthOrDeath;
+        this.region = region;
+        this.count = count;
+    }
+
     public int getId() {
         return id;
     }

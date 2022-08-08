@@ -1,16 +1,9 @@
 <!DOCTYPE mapper
     PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
 <mapper namespace="com.mydemo.demo.Mapper.BirthDeathRateMapper">
 
-    <resultMap id="BirthDeathRate" type="com.mydemo.demo.Entity.BirthDeathRate">
-        <id column="id" property="id" />
-        <result column="period" property="period" />
-        <result column="birth_or_death" property="birthOrDeath" />
-        <result column="region" property="region" />
-        <result column="count" property="count" />
-    </resultMap>
-<!--    carmel in java but underscored in database, so we use resultMap-->
     <resultMap id="BirthDeathRateMap" type="com.mydemo.demo.Entity.BirthDeathRate">
         <id column="id" property="id" />
         <result column="period" property="period" />
@@ -26,9 +19,9 @@
         VALUE(#{period}, #{birthOrDeath}, #{region}, #{count})
     </insert>
 
-    <select id="findById" resultMap="BirthDeathRate">
-        SELECT *
-        FROM birth_death_rate WHERE id=#{id}
+    <select id="findById" resultType="com.mydemo.demo.Entity.BirthDeathRate">
+        SELECT id, period, birth_or_death birthOrDeath, region, count
+        FROM birth_death_rate WHERE id = #{id}
     </select>
 
     <select id="findAll" resultMap="BirthDeathRateMap">
@@ -36,7 +29,8 @@
     </select>
 
     <select id="filterBirth" resultMap="BirthDeathRateMap">
-        SELECT * FROM birth_death_rate
+        SELECT *
+        FROM birth_death_rate
         WHERE birth_or_death=#{birthOrDeath}
     </select>
 
@@ -46,11 +40,7 @@
 
     <update id="updateById" parameterType="BirthDeathRate">
         UPDATE birth_death_rate
-        SET
-        period = #{period},
-        birth_or_death = #{birthOrDeath},
-        region = #{region},
-        count = #{count}
+        SET period = #{period}, birth_or_death = #{birthOrDeath}, region = #{region}, count = #{count}
         WHERE id = #{id}
     </update>
 
@@ -58,4 +48,15 @@
         TRUNCATE TABLE birth_death_rate
     </delete>
 
+    <insert id="saveAll" parameterType="java.util.List">
+        INSERT INTO birth_death_rate (period, birth_or_death, region, count)
+        VALUES
+        <foreach collection="list" separator="," index="index" item="item">
+            (#{item.period,jdbcType=INTEGER},
+            #{item.birthOrDeath,jdbcType=VARCHAR},
+            #{item.region,jdbcType=VARCHAR},
+            #{item.count,jdbcType=INTEGER}
+            )
+        </foreach>
+    </insert>
 </mapper>
